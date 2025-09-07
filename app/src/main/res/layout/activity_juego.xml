@@ -1,0 +1,222 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/white">
+
+    <!-- Top Bar -->
+    <LinearLayout
+        android:id="@+id/topBarJuego"
+        android:layout_width="0dp"
+        android:layout_height="60dp"
+        android:orientation="horizontal"
+        android:padding="8dp"
+        android:background="@drawable/border_black"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <ImageView
+            android:id="@+id/btnBack"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:src="@drawable/ic_media_previous"
+            app:tint="@android:color/black"
+            android:contentDescription="Volver"
+            android:padding="4dp"/>
+
+        <TextView
+            android:id="@+id/topBarTitleJuego"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="TeleAhorcado"
+            android:textStyle="bold"
+            android:textColor="@android:color/black"
+            android:textSize="18sp"
+            android:layout_marginStart="8dp"
+            android:layout_weight="1"/>
+
+        <ImageView
+            android:id="@+id/btnEstadisticas"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:src="@drawable/ic_query_stats"
+            app:tint="@android:color/black"
+            android:contentDescription="Ver estadísticas"
+            android:padding="4dp"/>
+    </LinearLayout>
+    <!-- Título de la temática -->
+    <TextView
+        android:id="@+id/tvTematica"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Temática: Redes"
+        android:textSize="22sp"
+        android:textStyle="bold"
+        android:textColor="@android:color/black"
+        app:layout_constraintTop_toBottomOf="@id/topBarJuego"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="16dp"/>
+
+    <!-- Imagen del ahorcado -->
+
+    <ImageView
+        android:id="@+id/ivAntena"
+        android:layout_width="133dp"
+        android:layout_height="320dp"
+        android:layout_marginStart="36dp"
+        android:layout_marginTop="16dp"
+        android:src="@drawable/antenna_sinfondo"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/ivCabeza"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginStart="4dp"
+        android:layout_marginTop="124dp"
+        android:src="@drawable/head1sin_fondo"
+        app:layout_constraintStart_toEndOf="@id/ivAntena"
+        app:layout_constraintTop_toTopOf="@id/ivAntena" />
+
+    <ImageView
+        android:id="@+id/ivTorso"
+        android:layout_width="30dp"
+        android:layout_height="100dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="20dp"
+        android:src="@drawable/torso_sinfondo"
+        app:layout_constraintStart_toStartOf="@id/ivCabeza"
+        app:layout_constraintTop_toBottomOf="@id/ivCabeza" />
+
+    <ImageView
+        android:id="@+id/ivBrazoDerecho"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="16dp"
+        android:src="@drawable/brazodere_piernaizq_sinfondo"
+        app:layout_constraintStart_toEndOf="@id/ivTorso"
+        app:layout_constraintTop_toTopOf="@id/ivTorso" />
+
+    <!-- Guiones bajos para la palabra -->
+    <ImageView
+        android:id="@+id/ivBrazoIzquierdo"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="8dp"
+        android:src="@drawable/brazoizq_piernadere_sinfondo"
+        app:layout_constraintEnd_toStartOf="@id/ivTorso"
+        app:layout_constraintTop_toTopOf="@id/ivTorso" />
+
+    <ImageView
+        android:id="@+id/ivPiernaIzquierda"
+        android:layout_width="49dp"
+        android:layout_height="45dp"
+        android:layout_marginTop="4dp"
+        android:layout_marginEnd="8dp"
+        android:src="@drawable/brazodere_piernaizq_sinfondo"
+        app:layout_constraintEnd_toStartOf="@id/ivTorso"
+        app:layout_constraintTop_toBottomOf="@id/ivTorso" />
+
+    <ImageView
+        android:id="@+id/ivPiernaDerecha"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginStart="8dp"
+        android:src="@drawable/brazoizq_piernadere_sinfondo"
+        app:layout_constraintStart_toEndOf="@id/ivTorso"
+        app:layout_constraintTop_toBottomOf="@id/ivTorso" />
+
+    <TextView
+        android:id="@+id/tvPalabraOculta"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="_ _ _ _ _"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        android:textColor="@android:color/black"
+        app:layout_constraintTop_toBottomOf="@id/ivAhorcado"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="16dp"/>
+
+    <!-- Abecedario -->
+    <GridLayout
+        android:id="@+id/glAbecedario"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:columnCount="4"
+        android:rowCount="6"
+        android:layout_marginTop="16dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        app:layout_constraintTop_toBottomOf="@id/tvPalabraOculta"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+        <!-- Botones de letras se generarán dinámicamente -->
+    </GridLayout>
+
+    <!-- Botón de nuevo juego -->
+    <Button
+        android:id="@+id/btnNuevoJuego"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Nuevo Juego"
+        android:background="@drawable/border_black"
+        android:textColor="@android:color/black"
+        app:layout_constraintTop_toBottomOf="@id/glAbecedario"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="16dp"/>
+
+    <!-- Mensaje de resultado -->
+    <TextView
+        android:id="@+id/tvResultado"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Ganó / Tiempo: 15s"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:visibility="gone"
+        app:layout_constraintTop_toBottomOf="@id/btnNuevoJuego"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="16dp"/>
+
+    <!-- Botón de comodín -->
+    <LinearLayout
+        android:id="@+id/llComodin"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintTop_toTopOf="@id/ivAhorcado"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginEnd="16dp">
+
+        <ImageView
+            android:id="@+id/btnComodin"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:src="@drawable/ic_star"
+            app:tint="@android:color/black"
+            android:contentDescription="Comodín"
+            android:padding="4dp"/>
+
+        <TextView
+            android:id="@+id/tvComodin"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="0/3"
+            android:textSize="16sp"
+            android:textColor="@android:color/black"
+            android:layout_gravity="center_vertical"
+            android:layout_marginStart="8dp"/>
+    </LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
