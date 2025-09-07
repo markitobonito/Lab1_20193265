@@ -9,11 +9,12 @@ import android.widget.GridLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 
 public class JuegoActivity extends AppCompatActivity {
 
     private TextView tvPalabraOculta, tvResultado, tvComodin, tvTematica;
-    private ImageView ivAhorcado;
+    private ImageView ivCabeza, ivTorso, ivBrazoDerecho, ivBrazoIzquierdo, ivPiernaIzquierda, ivPiernaDerecha;
     private GridLayout glAbecedario;
     private Button btnNuevoJuego;
     private String palabraOculta;
@@ -30,11 +31,22 @@ public class JuegoActivity extends AppCompatActivity {
         tvPalabraOculta = findViewById(R.id.tvPalabraOculta);
         tvResultado = findViewById(R.id.tvResultado);
         tvComodin = findViewById(R.id.tvComodin);
-        ivAhorcado = findViewById(R.id.ivAhorcado);
         glAbecedario = findViewById(R.id.glAbecedario);
         btnNuevoJuego = findViewById(R.id.btnNuevoJuego);
         tvTematica = findViewById(R.id.tvTematica);
-        tvComodin.setText("0/0");
+        tvComodin.setText(getString(R.string.comodin_text, 0, 0));
+
+        // Inicializar partes del muñeco
+        ivCabeza = findViewById(R.id.ivCabeza);
+        ivTorso = findViewById(R.id.ivTorso);
+        ivBrazoDerecho = findViewById(R.id.ivBrazoDerecho);
+        ivBrazoIzquierdo = findViewById(R.id.ivBrazoIzquierdo);
+        ivPiernaIzquierda = findViewById(R.id.ivPiernaIzquierda);
+        ivPiernaDerecha = findViewById(R.id.ivPiernaDerecha);
+
+        // Ocultar todas las partes del muñeco al inicio
+        ocultarPartesDelMuñeco();
+
         // Recibe la palabra y temática
         palabraOculta = getIntent().getStringExtra("palabraOculta");
         String tematica = getIntent().getStringExtra("tematica");
@@ -49,6 +61,15 @@ public class JuegoActivity extends AppCompatActivity {
         btnNuevoJuego.setOnClickListener(v -> finish());
 
         findViewById(R.id.btnComodin).setOnClickListener(v -> usarComodin());
+    }
+
+    private void ocultarPartesDelMuñeco() {
+        ivCabeza.setVisibility(View.INVISIBLE);
+        ivTorso.setVisibility(View.INVISIBLE);
+        ivBrazoDerecho.setVisibility(View.INVISIBLE);
+        ivBrazoIzquierdo.setVisibility(View.INVISIBLE);
+        ivPiernaIzquierda.setVisibility(View.INVISIBLE);
+        ivPiernaDerecha.setVisibility(View.INVISIBLE);
     }
 
     private void configurarJuego() {
@@ -76,7 +97,6 @@ public class JuegoActivity extends AppCompatActivity {
         tvPalabraOculta.setText(resultado.toString().trim());
     }
 
-    // 3. Modifica procesarLetra para actualizar aciertos y comodines
     private void procesarLetra(View view) {
         Button btnLetra = (Button) view;
         String letra = btnLetra.getText().toString();
@@ -89,42 +109,44 @@ public class JuegoActivity extends AppCompatActivity {
                 comodines++;
                 aciertosConsecutivos = 0;
             }
-            tvComodin.setText(comodines + "/" + aciertosConsecutivos);
+            tvComodin.setText(getString(R.string.comodin_text, comodines, aciertosConsecutivos));
             actualizarPalabraOculta();
             // Verifica si ganó
-            if (palabraOculta.equals(tvPalabraOculta.getText().toString().replace(" ", ""))) {
-                mostrarResultado(true);
+            if (palabraOculta.trim().equals(tvPalabraOculta.getText().toString().replace(" ", "").trim())) {
+                runOnUiThread(() -> mostrarResultado(true));
             }
         } else {
             errores++;
             actualizarAhorcado();
+            // Verifica si perdió
+            if (errores >= 6) {
+                runOnUiThread(() -> mostrarResultado(false));
+            }
         }
     }
 
-    // 4. Ajusta actualizarAhorcado para el orden y tamaño
-
     private void actualizarAhorcado() {
-        int size = 100;
-        if (errores == 1) {
-            ivAhorcado.setImageResource(R.drawable.head1sin_fondo);
-        } else if (errores == 2) {
-            ivAhorcado.setImageResource(R.drawable.torso_sinfondo);
-        } else if (errores == 3) {
-            ivAhorcado.setImageResource(R.drawable.brazodere_piernaizq_sinfondo); // brazo derecho
-        } else if (errores == 4) {
-            ivAhorcado.setImageResource(R.drawable.brazoizq_piernadere_sinfondo); // brazo izquierdo
-        } else if (errores == 5) {
-            ivAhorcado.setImageResource(R.drawable.brazodere_piernaizq_sinfondo); // pierna izquierda
-        } else if (errores == 6) {
-            ivAhorcado.setImageResource(R.drawable.brazoizq_piernadere_sinfondo); // pierna derecha
-            mostrarResultado(false);
+        switch (errores) {
+            case 1:
+                ivCabeza.setVisibility(View.VISIBLE);
+                break;
+            case 2:
+                ivTorso.setVisibility(View.VISIBLE);
+                break;
+            case 3:
+                ivBrazoDerecho.setVisibility(View.VISIBLE);
+                break;
+            case 4:
+                ivBrazoIzquierdo.setVisibility(View.VISIBLE);
+                break;
+            case 5:
+                ivPiernaIzquierda.setVisibility(View.VISIBLE);
+                break;
+            case 6:
+                ivPiernaDerecha.setVisibility(View.VISIBLE);
+                mostrarResultado(false);
+                break;
         }
-        ivAhorcado.getLayoutParams().width = size;
-        ivAhorcado.getLayoutParams().height = size;
-        ivAhorcado.requestLayout();
-
-        // Mantener la imagen de fondo (antenna_sinfondo)
-        ivAhorcado.setBackgroundResource(R.drawable.antenna_sinfondo);
     }
 
 
@@ -143,11 +165,11 @@ public class JuegoActivity extends AppCompatActivity {
         long tiempoFinal = (SystemClock.elapsedRealtime() - tiempoInicio) / 1000;
         tvResultado.setVisibility(View.VISIBLE);
         if (gano) {
-            tvResultado.setText("Ganó / Tiempo: " + tiempoFinal + "s");
-            tvResultado.setTextColor(getResources().getColor(android.R.color.holo_green_dark));
+            tvResultado.setText(getString(R.string.resultado_gano, tiempoFinal));
+            tvResultado.setTextColor(ContextCompat.getColor(this, android.R.color.holo_green_dark));
         } else {
-            tvResultado.setText("Perdió / Tiempo: " + tiempoFinal + "s");
-            tvResultado.setTextColor(getResources().getColor(android.R.color.holo_red_dark));
+            tvResultado.setText(getString(R.string.resultado_perdio, tiempoFinal));
+            tvResultado.setTextColor(ContextCompat.getColor(this, android.R.color.holo_red_dark));
         }
     }
 
